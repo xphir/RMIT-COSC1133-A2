@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# -----------------------------------
+# Declarations
+# ------------------------------------
 if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     echo "Not running as root"
     exit
@@ -14,12 +17,43 @@ declare -i SELECTED_ARRAY_NUM
 declare -a ARRAY_FOLDER_NAMES
 declare -a ARRAY_TRIGGER_NAMES
 
+# -----------------------------------
+# Utility Functions
+# ------------------------------------
+pause(){
+  read -p "Press [Enter] key to continue..." fackEnterKey
+}
+
+
+
+# -----------------------------------
+# Task 2: Script launch
+# ------------------------------------
+main(){
+    while true
+    do
+        welcome_message
+        read_options
+    done
+}
+
 welcome_message(){
     printf "\n"
     echo "Welcome to Led_Konfigurator!"
     echo "============================"
     echo "Please select an led to configure:"
     print_folder_array
+}
+
+read_options(){
+    let END_CASE=$FOLDER_COUNTER-1
+	local choice
+	read -p "Please enter a number (1-$FOLDER_COUNTER) for the led to configure or quit:" choice
+	case $choice in
+		[1-$END_CASE]*) manipulation_menu $choice;;
+		$FOLDER_COUNTER) exit 0;;
+		*) echo -e "${RED}Error...${STD}" && sleep 2
+	esac
 }
 
 create_folder_array(){
@@ -41,10 +75,9 @@ print_folder_array(){
     echo 
 }
 
-pause(){
-  read -p "Press [Enter] key to continue..." fackEnterKey
-}
-
+# -----------------------------------
+# Task 3: LED Manipulation Menu
+# ------------------------------------
 manipulation_menu(){
     local read_selection=$1
     #Set the global variables to the selected menu choice
@@ -84,6 +117,27 @@ manipulation_read(){
     esac
 }
 
+get_folder_array_selection(){
+    local read_selection=$1
+    local counter=1
+    for FolderName in "${ARRAY_FOLDER_NAMES[@]}"
+    do
+        if [ $read_selection -eq $counter ]
+        then
+            #Note this is global
+            SELECTED_VALUE="$FolderName"
+            SELECTED_ARRAY_NUM=$counter
+            TRIGGER_FILE="${LEDS_FOLDER}${FolderName}/trigger"
+            return
+        fi
+        ((counter++))
+    done
+}
+
+# -----------------------------------
+# Task 4:  Turn on and off the led
+# ------------------------------------
+
 manipulation_turn_on(){
     local brightness=1
 
@@ -98,6 +152,32 @@ manipulation_turn_off(){
     led_brightness $SELECTED_VALUE $brightness
     pause
 }
+
+led_triggers() {
+   local led=$1
+   local trigger=$2
+
+   if [ -z "$trigger" ]; then
+       cat "$leds/$led/trigger"
+   else
+       echo "$trigger" > "$leds/$led/trigger"
+   fi
+}
+
+led_brightness() {
+   local led=$1
+   local brightness=$2
+
+   if [ -z "$brightness" ]; then
+       cat "${LEDS_FOLDER}${led}/brightness"
+   else
+       echo "$brightness" > "${LEDS_FOLDER}${led}/brightness"
+   fi
+}
+
+# -----------------------------------
+# Task 5:  Associate LED with a system event
+# ------------------------------------
 
 manipulation_associate_system(){
     echo "manipulation_associate_system $SELECTED_VALUE"
@@ -136,13 +216,24 @@ print_associate_system_array(){
             LINE_COUNT=5
         fi
     done
-    printf "%s) %s" "$ARRAY_LENG" "Quit to previous menu"
+    printf "%s) %s\n" "$ARRAY_LENG" "Quit to previous menu"
 }
 
 associate_system_read(){
-    pause
-    main
+    let END_CASE=$FOLDER_COUNTER-1
+	local choice
+    local limit=$ARRAY_LENG-1
+	read -p "Please select an option (1-$ARRAY_LENG):" choice
+	case $choice in
+		[1-$limit]*) led_triggers $ARRAY_TRIGGER_NAMES[$choice-1];;
+		$ARRAY_LENG) exit 0;;
+		*) echo -e "${RED}Error...${STD}" && sleep 2
+	esac
 }
+
+# -----------------------------------
+# Task 6:  Associate LED with the performance of a process
+# ------------------------------------
 
 manipulation_process_performance(){
 
@@ -156,57 +247,6 @@ manipulation_stop_association(){
     pause
 }
 
-led_triggers() {
-    local led=$1
-    cat "${LEDS_FOLDER}${led}/trigger"
-}
-
-led_brightness() {
-   local led=$1
-   local brightness=$2
-
-   if [ -z "$brightness" ]; then
-       cat "${LEDS_FOLDER}${led}/brightness"
-   else
-       echo "$brightness" > "${LEDS_FOLDER}${led}/brightness"
-   fi
-}
-
-get_folder_array_selection(){
-    local read_selection=$1
-    local counter=1
-    for FolderName in "${ARRAY_FOLDER_NAMES[@]}"
-    do
-        if [ $read_selection -eq $counter ]
-        then
-            #Note this is global
-            SELECTED_VALUE="$FolderName"
-            SELECTED_ARRAY_NUM=$counter
-            TRIGGER_FILE="${LEDS_FOLDER}${FolderName}/trigger"
-            return
-        fi
-        ((counter++))
-    done
-}
-
-read_options(){
-    let END_CASE=$FOLDER_COUNTER-1
-	local choice
-	read -p "Please enter a number (1-$FOLDER_COUNTER) for the led to configure or quit:" choice
-	case $choice in
-		[1-$END_CASE]*) manipulation_menu $choice;;
-		$FOLDER_COUNTER) exit 0;;
-		*) echo -e "${RED}Error...${STD}" && sleep 2
-	esac
-}
-
-main(){
-    while true
-    do
-        welcome_message
-        read_options
-    done
-}
 
 # ----------------------------------------------
 # Trap CTRL+C, CTRL+Z and quit singles
@@ -219,6 +259,6 @@ trap '' SIGINT SIGQUIT SIGTSTP
 create_folder_array
 
 # -----------------------------------
-# Main logic - infinite loop
+# Main function call
 # ------------------------------------
 main
