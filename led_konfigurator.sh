@@ -141,6 +141,22 @@ manipulation_stop_association(){
     pause
 }
 
+led_triggers() {
+    local led=$1
+    cat "${LEDS_FOLDER}${led}/trigger"
+}
+
+led_brightness() {
+   local led=$1
+   local brightness=$2
+
+   if [ -z "$brightness" ]; then
+       cat "${LEDS_FOLDER}${led}/brightness"
+   else
+       echo "$brightness" > "${LEDS_FOLDER}${led}/brightness"
+   fi
+}
+
 get_folder_array_selection(){
     local read_selection=$1
     local counter=1
