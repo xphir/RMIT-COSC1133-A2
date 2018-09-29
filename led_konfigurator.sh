@@ -220,15 +220,21 @@ print_associate_system_array(){
 }
 
 associate_system_read(){
-    let END_CASE=$FOLDER_COUNTER-1
 	local choice
-    local limit=$ARRAY_LENG-1
+    local limit
+    let limit=$ARRAY_LENG-1
 	read -p "Please select an option (1-$ARRAY_LENG):" choice
 	case $choice in
-		[1-$limit]*) led_triggers $ARRAY_TRIGGER_NAMES[$choice-1];;
+		[1-$limit]*) led_add_trigger ${ARRAY_TRIGGER_NAMES[choice]};;
 		$ARRAY_LENG) exit 0;;
 		*) echo -e "${RED}Error...${STD}" && sleep 2
 	esac
+}
+
+led_add_trigger(){
+    local selected_trigger=$1
+    echo "selected_trigger $selected_trigger added to $SELECTED_VALUE"
+    echo "$selected_trigger" > "${LEDS_FOLDER}${SELECTED_VALUE}/trigger"
 }
 
 # -----------------------------------
