@@ -40,6 +40,18 @@ manipulation_menu(){
     pause
 }
 
+get_folder_array_selection(){
+    local counter=1
+    for FolderName in "${arrFolderNames[@]}"
+    do
+        if [ $1 -eq $counter ]
+        then
+            return $FolderName
+        fi
+        ((counter++))
+    done
+}
+
 read_options(){
     let END_CASE=$FOLDER_COUNTER-1
 	local choice
