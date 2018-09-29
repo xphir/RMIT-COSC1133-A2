@@ -96,7 +96,36 @@ manipulation_turn_off(){
 }
 
 manipulation_associate_system(){
-    echo "manipulation_associate_system $1"
+    echo "manipulation_associate_system $SELECTED_VALUE"
+    while true
+    do
+        associate_system_message
+        associate_system_read
+    done
+}
+
+associate_system_message(){
+    printf "\n"
+    printf "Associate Led with a system Event"
+    printf "================================="
+    printf "Available events are:"
+    printf "---------------------"
+    print_associate_system_array
+}
+
+print_associate_system_array(){
+    ARRAY_TRIGGER_NAMES=(`cat "$TRIGGER_FILE"`)
+
+    ARRAY_LENG=${#ARRAY_TRIGGER_NAMES[@]}
+
+    for (( i=0; i<${ARRAY_LENG}; i++ ));
+    do
+        printf "%n: %s" "$i" "${ARRAY_TRIGGER_NAMES[$i]}"
+    done
+    printf "%n: %s" "ARRAY_LENG" "Quit to previous menu"
+}
+
+associate_system_read(){
     pause
 }
 
