@@ -5,11 +5,6 @@ LEDS_FOLDER=/sys/class/leds/
 
 declare -a arrFolderNames
 
-main() {
-    
-    welcome_message
-}
-
 welcome_message(){
     echo "Welcome to Led_Konfigurator!"
     echo "============================"
