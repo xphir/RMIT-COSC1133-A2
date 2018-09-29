@@ -13,7 +13,7 @@ LEDS_FOLDER=/sys/class/leds/
 
 STRING_SELECTED_VALUE=""
 STRING_TRIGGER_FILE=""
-declare -i SELECTED_ARRAY_NUM
+declare -i INT_SELECTED_FOLDER_ARRAY_NUM
 declare -i INT_FOLDER_ARRAY_LENGTH
 declare -i INT_TRIGGER_ARRAY_LENGTH
 declare -a ARRAY_FOLDER_NAMES
@@ -27,6 +27,11 @@ pause(){
   read -p "Press [Enter] key to continue..." fackEnterKey
 }
 
+pause_custom(){
+    local input=$1
+    read -p "$input" fackEnterKey
+}
+
 
 
 # -----------------------------------
@@ -35,12 +40,12 @@ pause(){
 main(){
     while true
     do
-        welcome_message
-        read_options
+        main_message
+        main_read
     done
 }
 
-welcome_message(){
+main_message(){
     printf "\n"
     echo "Welcome to Led_Konfigurator!"
     echo "============================"
@@ -48,17 +53,17 @@ welcome_message(){
     print_folder_array
 }
 
-read_options(){
+main_read(){
     local limit
     local choice
 
     INT_FOLDER_ARRAY_LENGTH=${#ARRAY_FOLDER_NAMES[@]}
-    let limit=$INT_FOLDER_ARRAY_LENGTH-1
-	
-	read -p "Please enter a number (1-$INT_FOLDER_ARRAY_LENGTH) for the led to configure or quit:" choice
+    let limit=$INT_FOLDER_ARRAY_LENGTH+1
+
+	read -p "Please enter a number (1-$limit) for the led to configure or quit:" choice
 	case $choice in
-		[1-$limit]*) manipulation_menu $choice;;
-		$INT_FOLDER_ARRAY_LENGTH) exit 0;;
+		[1-$INT_FOLDER_ARRAY_LENGTH]) manipulation_menu $choice;;
+		$limit) exit 0;;
 		*) echo -e "${RED}Error...${STD}" && sleep 2
 	esac
 }
@@ -134,7 +139,8 @@ get_folder_array_selection(){
         then
             #Note this is global
             STRING_SELECTED_VALUE="$FolderName"
-            SELECTED_ARRAY_NUM=$counter
+
+            INT_SELECTED_FOLDER_ARRAY_NUM=$counter
             STRING_TRIGGER_FILE="${LEDS_FOLDER}${FolderName}/trigger"
             return
         fi
@@ -206,41 +212,50 @@ associate_system_message(){
 }
 
 print_associate_system_array(){
+    #Line count is 5 to allow the menu headers
+    local count=1
+    local screen_size=$(tput lines)
+    #Screen buffer is how many lines of give before you pause to show more
+    local screen_buffer=5
+
     ARRAY_TRIGGER_NAMES=(`cat "$STRING_TRIGGER_FILE"`)
     INT_TRIGGER_ARRAY_LENGTH=${#ARRAY_TRIGGER_NAMES[@]}
 
-    #Line count is 5 to allow the menu headers
-    LINE_COUNT=5
-    SCREEN_SIZE=$(tput lines)
-
-    for (( i=0; i<${INT_TRIGGER_ARRAY_LENGTH}; i++ ));
+    for trigger in "${ARRAY_TRIGGER_NAMES[@]}"
     do
-        printf "%s) %s\n" "$i" "${ARRAY_TRIGGER_NAMES[$i]}"
-        #This part checks that there is screen size free
-        ((LINE_COUNT++))
-        if [ $LINE_COUNT -gt $SCREEN_SIZE ]
+        printf "%s) %s\n" "$count" "$trigger"
+        
+        ((count++))
+        ((screen_buffer++))
+        if [ $screen_buffer -gt $screen_size ]
         then
-            pause
-            LINE_COUNT=5
+            pause_custom "Press [Enter] key to show the rest of the options..."
+            screen_buffer=5
         fi
     done
-    printf "%s) %s\n" "$INT_TRIGGER_ARRAY_LENGTH" "Quit to previous menu"
+    printf "%s) %s\n" "$count" "Quit to previous menu"
 }
 
 associate_system_read(){
 	local choice
     local limit
-    let limit=$INT_TRIGGER_ARRAY_LENGTH-1
-	read -p "Please select an option (1-$INT_TRIGGER_ARRAY_LENGTH):" choice
-	case $choice in
-		[1-$limit]*) led_add_trigger ${ARRAY_TRIGGER_NAMES[choice]};;
-		$INT_TRIGGER_ARRAY_LENGTH) manipulation_menu $SELECTED_ARRAY_NUM;;
+    let limit=$INT_TRIGGER_ARRAY_LENGTH+1
+	read -p "Please select an option (1-$limit):" choice
+    echo "debug: choice:$choice | limit:$limit | INT_TRIGGER_ARRAY_LENGTH:$INT_TRIGGER_ARRAY_LENGTH | INT_SELECTED_FOLDER_ARRAY_NUM:$INT_SELECTED_FOLDER_ARRAY_NUM"
+    case $choice in
+		[1-$INT_TRIGGER_ARRAY_LENGTH]) led_add_trigger $choice;;
+		$limit) manipulation_menu $INT_SELECTED_FOLDER_ARRAY_NUM;;
 		*) echo -e "${RED}Error...${STD}" && sleep 2
 	esac
 }
 
 led_add_trigger(){
-    local selected_trigger=$1
+    local int_selected_trigger=$1
+
+    #this is set to -1 because the array starts at 0 not 1
+    let int_selected_trigger=$int_selected_trigger-1
+    local selected_trigger=${ARRAY_TRIGGER_NAMES[$int_selected_trigger]}
+    
     echo "selected_trigger $selected_trigger added to $STRING_SELECTED_VALUE"
     echo "$selected_trigger" > "${LEDS_FOLDER}${STRING_SELECTED_VALUE}/trigger"
 }
