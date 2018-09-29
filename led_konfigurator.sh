@@ -68,11 +68,11 @@ manipulation_read(){
     local choice
 	read -p "Please enter a number (1-6) for your choice:" choice
     case $choice in
-        1) manipulation_turn_on $1;;
-        2) manipulation_turn_off $1;;
-        3) manipulation_associate_system $1;;
-        4) manipulation_process_performance $1;;
-        5) manipulation_stop_association $1;;
+        1) manipulation_turn_on;;
+        2) manipulation_turn_off;;
+        3) manipulation_associate_system;;
+        4) manipulation_process_performance;;
+        5) manipulation_stop_association;;
         6) main;;
         *) echo -e "${RED}Error...${STD}" && sleep 2
     esac
