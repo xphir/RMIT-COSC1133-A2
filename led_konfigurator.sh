@@ -110,16 +110,15 @@ manipulation_associate_system(){
 
 associate_system_message(){
     printf "\n"
-    printf "Associate Led with a system Event"
-    printf "================================="
-    printf "Available events are:"
-    printf "---------------------"
+    echo "Associate Led with a system Event"
+    echo "================================="
+    echo "Available events are:"
+    echo "---------------------"
     print_associate_system_array
 }
 
 print_associate_system_array(){
     ARRAY_TRIGGER_NAMES=(`cat "$TRIGGER_FILE"`)
-
     ARRAY_LENG=${#ARRAY_TRIGGER_NAMES[@]}
 
     for (( i=0; i<${ARRAY_LENG}; i++ ));
@@ -131,6 +130,7 @@ print_associate_system_array(){
 
 associate_system_read(){
     pause
+    main
 }
 
 manipulation_process_performance(){
