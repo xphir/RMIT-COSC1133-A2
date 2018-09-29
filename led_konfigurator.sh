@@ -36,7 +36,18 @@ pause(){
 }
 
 manipulation_menu(){
-    echo "manipulation_menu() called for option $1"
+    local LOOP=0
+    while [ $LOOP -eq 0 ]
+    do
+        manipulation_message $1
+        LOOP=$(manipulation_read $1)
+    done
+}
+manipulation_message(){
+}
+manipulation_read(){
+}
+}
     pause
 }
 
