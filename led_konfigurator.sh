@@ -11,6 +11,7 @@ welcome_message(){
     echo "Welcome to Led_Konfigurator!"
     echo "============================"
     echo "Please select an led to configure:"
+    echo "1. Loop goes here"
     echo "Please enter a number (1-9) for the led to configure or quit:"
 }
 
