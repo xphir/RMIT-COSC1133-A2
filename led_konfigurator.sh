@@ -43,7 +43,29 @@ manipulation_menu(){
         LOOP=$(manipulation_read $1)
     done
 }
+
 manipulation_message(){
+    #Find the selected folder
+    local counter=1
+    for FolderName in "${arrFolderNames[@]}"
+    do
+        if [ $1 -eq $counter ]
+        then
+            SELECTED_ITEM=$FolderName
+        fi
+        ((counter++))
+    done
+
+    #Print the message
+    echo "$SELECTED_ITEM"
+    echo "=========="
+    echo "What would you like to do with this led?"
+    echo "1) turn on"
+    echo "2) turn off"
+    echo "3) associate with a system event"
+    echo "4) associate with the performance of a process"
+    echo "5) stop association with a process’ performance"
+    echo "6) quit to main menu"
 }
 manipulation_read(){
 }
