@@ -21,13 +21,13 @@ create_folder_array(){
     for folder in $LEDS_FOLDER*
     do
         folder=${folder%*/}
-        arrFolderNames=(${arrFolderNames[@]} "${folder##*/}")
+        ARRAY_FOLDER_NAMES=(${ARRAY_FOLDER_NAMES[@]} "${folder##*/}")
     done
 }
 
 print_folder_array(){
     FOLDER_COUNTER=1
-    for FolderName in "${arrFolderNames[@]}"
+    for FolderName in "${ARRAY_FOLDER_NAMES[@]}"
     do
         echo "$FOLDER_COUNTER. $FolderName"
         ((FOLDER_COUNTER++))
@@ -41,18 +41,19 @@ pause(){
 }
 
 manipulation_menu(){
+    local read_selection=$1
+    #Set the global variables to the selected menu choice
+    get_folder_array_selection $read_selection
+
     while true
     do
-        manipulation_message $1
-        manipulation_read $1
+        manipulation_message
+        manipulation_read
     done
 }
 
 manipulation_message(){
-    #Find the selected folder
-    get_folder_array_selection $1
-
-    #Print the message
+    printf "\n"
     echo "$SELECTED_VALUE"
     echo "=========="
     echo "What would you like to do with this led?"
@@ -79,12 +80,18 @@ manipulation_read(){
 }
 
 manipulation_turn_on(){
-    echo "manipulation_turn_on $1"
+    local brightness=1
+
+    echo "manipulation_turn_on $SELECTED_VALUE"
+    led_brightness $SELECTED_VALUE $brightness
     pause
 }
 
 manipulation_turn_off(){
-    echo "manipulation_turn_off $1"
+    local brightness=0
+
+    echo "manipulation_turn_on $SELECTED_VALUE"
+    led_brightness $SELECTED_VALUE $brightness
     pause
 }
 
@@ -92,24 +99,30 @@ manipulation_associate_system(){
     echo "manipulation_associate_system $1"
     pause
 }
+
 manipulation_process_performance(){
-    echo "manipulation_process_performance $1"
+
+    echo "manipulation_process_performance $SELECTED_VALUE"
     pause
 }
 
 manipulation_stop_association(){
-    echo "manipulation_stop_association $1"
+
+    echo "manipulation_stop_association $SELECTED_VALUE"
     pause
 }
 
 get_folder_array_selection(){
+    local read_selection=$1
     local counter=1
-    for FolderName in "${arrFolderNames[@]}"
+    for FolderName in "${ARRAY_FOLDER_NAMES[@]}"
     do
-        if [ $1 -eq $counter ]
+        if [ $read_selection -eq $counter ]
         then
             #Note this is global
             SELECTED_VALUE="$FolderName"
+            SELECTED_ARRAY_NUM=$counter
+            TRIGGER_FILE="${LEDS_FOLDER}${FolderName}/trigger"
             return
         fi
         ((counter++))
