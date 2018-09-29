@@ -121,11 +121,22 @@ print_associate_system_array(){
     ARRAY_TRIGGER_NAMES=(`cat "$TRIGGER_FILE"`)
     ARRAY_LENG=${#ARRAY_TRIGGER_NAMES[@]}
 
+    #Line count is 5 to allow the menu headers
+    LINE_COUNT=5
+    SCREEN_SIZE=$(tput lines)
+
     for (( i=0; i<${ARRAY_LENG}; i++ ));
     do
-        printf "%n: %s" "$i" "${ARRAY_TRIGGER_NAMES[$i]}"
+        printf "%s) %s\n" "$i" "${ARRAY_TRIGGER_NAMES[$i]}"
+        #This part checks that there is screen size free
+        ((LINE_COUNT++))
+        if [ $LINE_COUNT -gt $SCREEN_SIZE ]
+        then
+            pause
+            LINE_COUNT=5
+        fi
     done
-    printf "%n: %s" "ARRAY_LENG" "Quit to previous menu"
+    printf "%s) %s" "$ARRAY_LENG" "Quit to previous menu"
 }
 
 associate_system_read(){
