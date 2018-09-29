@@ -67,7 +67,19 @@ manipulation_message(){
     echo "5) stop association with a process’ performance"
     echo "6) quit to main menu"
 }
+
 manipulation_read(){
+    local choice
+	read -p "Please enter a number (1-6) for your choice:" choice
+    case $choice in
+        1) manipulation_turn_on $1;;
+        2) manipulation_turn_off $1;;
+        3) manipulation_associate_system $1;;
+        4) manipulation_process_performance $1;;
+        5) manipulation_stop_association $1;;
+        6) return 1;;
+        *) echo -e "${RED}Error...${STD}" && sleep 2
+    esac
 }
 }
     pause
