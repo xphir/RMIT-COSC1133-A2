@@ -4,9 +4,13 @@ version=0.1
 LEDS_FOLDER=/sys/class/leds/
 
 SELECTED_VALUE=""
-declare -a arrFolderNames
+TRIGGER_FILE=""
+declare -i SELECTED_ARRAY_NUM
+declare -a ARRAY_FOLDER_NAMES
+declare -a ARRAY_TRIGGER_NAMES
 
 welcome_message(){
+    printf "\n"
     echo "Welcome to Led_Konfigurator!"
     echo "============================"
     echo "Please select an led to configure:"
