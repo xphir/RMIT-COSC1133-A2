@@ -129,6 +129,14 @@ read_options(){
 	esac
 }
 
+main(){
+    while true
+    do
+        welcome_message
+        read_options
+    done
+}
+
 # ----------------------------------------------
 # Trap CTRL+C, CTRL+Z and quit singles
 # ----------------------------------------------
@@ -142,8 +150,4 @@ create_folder_array
 # -----------------------------------
 # Main logic - infinite loop
 # ------------------------------------
-while true
-do
-	welcome_message
-	read_options
-done
+main
