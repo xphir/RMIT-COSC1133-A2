@@ -37,28 +37,19 @@ pause(){
 }
 
 manipulation_menu(){
-    local LOOP=0
-    while [ $LOOP -eq 0 ]
+    while true
     do
         manipulation_message $1
-        LOOP=$(manipulation_read $1)
+        manipulation_read $1
     done
 }
 
 manipulation_message(){
     #Find the selected folder
-    local counter=1
-    for FolderName in "${arrFolderNames[@]}"
-    do
-        if [ $1 -eq $counter ]
-        then
-            SELECTED_ITEM=$FolderName
-        fi
-        ((counter++))
-    done
+    get_folder_array_selection $1
 
     #Print the message
-    echo "$SELECTED_ITEM"
+    echo "$SELECTED_VALUE"
     echo "=========="
     echo "What would you like to do with this led?"
     echo "1) turn on"
@@ -78,7 +69,7 @@ manipulation_read(){
         3) manipulation_associate_system $1;;
         4) manipulation_process_performance $1;;
         5) manipulation_stop_association $1;;
-        6) return 1;;
+        6) main;;
         *) echo -e "${RED}Error...${STD}" && sleep 2
     esac
 }
@@ -113,7 +104,9 @@ get_folder_array_selection(){
     do
         if [ $1 -eq $counter ]
         then
-            return $FolderName
+            #Note this is global
+            SELECTED_VALUE="$FolderName"
+            return
         fi
         ((counter++))
     done
