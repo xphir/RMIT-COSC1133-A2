@@ -3,6 +3,7 @@
 version=0.1
 LEDS_FOLDER=/sys/class/leds/
 
+SELECTED_VALUE=""
 declare -a arrFolderNames
 
 welcome_message(){
