@@ -81,7 +81,28 @@ manipulation_read(){
         *) echo -e "${RED}Error...${STD}" && sleep 2
     esac
 }
+
+manipulation_turn_on(){
+    echo "manipulation_turn_on $1"
+    pause
 }
+
+manipulation_turn_off(){
+    echo "manipulation_turn_off $1"
+    pause
+}
+
+manipulation_associate_system(){
+    echo "manipulation_associate_system $1"
+    pause
+}
+manipulation_process_performance(){
+    echo "manipulation_process_performance $1"
+    pause
+}
+
+manipulation_stop_association(){
+    echo "manipulation_stop_association $1"
     pause
 }
 
