@@ -14,8 +14,10 @@ LEDS_FOLDER=/sys/class/leds/
 SELECTED_VALUE=""
 TRIGGER_FILE=""
 declare -i SELECTED_ARRAY_NUM
+declare -i INT_TRIGGER_ARRAY_LENGTH
 declare -a ARRAY_FOLDER_NAMES
 declare -a ARRAY_TRIGGER_NAMES
+
 
 # -----------------------------------
 # Utility Functions
@@ -80,6 +82,7 @@ print_folder_array(){
 # ------------------------------------
 manipulation_menu(){
     local read_selection=$1
+
     #Set the global variables to the selected menu choice
     get_folder_array_selection $read_selection
 
@@ -199,13 +202,13 @@ associate_system_message(){
 
 print_associate_system_array(){
     ARRAY_TRIGGER_NAMES=(`cat "$TRIGGER_FILE"`)
-    ARRAY_LENG=${#ARRAY_TRIGGER_NAMES[@]}
+    INT_TRIGGER_ARRAY_LENGTH=${#ARRAY_TRIGGER_NAMES[@]}
 
     #Line count is 5 to allow the menu headers
     LINE_COUNT=5
     SCREEN_SIZE=$(tput lines)
 
-    for (( i=0; i<${ARRAY_LENG}; i++ ));
+    for (( i=0; i<${INT_TRIGGER_ARRAY_LENGTH}; i++ ));
     do
         printf "%s) %s\n" "$i" "${ARRAY_TRIGGER_NAMES[$i]}"
         #This part checks that there is screen size free
@@ -216,17 +219,17 @@ print_associate_system_array(){
             LINE_COUNT=5
         fi
     done
-    printf "%s) %s\n" "$ARRAY_LENG" "Quit to previous menu"
+    printf "%s) %s\n" "$INT_TRIGGER_ARRAY_LENGTH" "Quit to previous menu"
 }
 
 associate_system_read(){
 	local choice
     local limit
-    let limit=$ARRAY_LENG-1
-	read -p "Please select an option (1-$ARRAY_LENG):" choice
+    let limit=$INT_TRIGGER_ARRAY_LENGTH-1
+	read -p "Please select an option (1-$INT_TRIGGER_ARRAY_LENGTH):" choice
 	case $choice in
 		[1-$limit]*) led_add_trigger ${ARRAY_TRIGGER_NAMES[choice]};;
-		$ARRAY_LENG) exit 0;;
+		$INT_TRIGGER_ARRAY_LENGTH) manipulation_menu $SELECTED_ARRAY_NUM;;
 		*) echo -e "${RED}Error...${STD}" && sleep 2
 	esac
 }
@@ -257,7 +260,7 @@ manipulation_stop_association(){
 # ----------------------------------------------
 # Trap CTRL+C, CTRL+Z and quit singles
 # ----------------------------------------------
-trap '' SIGINT SIGQUIT SIGTSTP
+#trap '' SIGINT SIGQUIT SIGTSTP
 
 # -----------------------------------
 # Create array from folder stuct
