@@ -87,15 +87,14 @@ manipulation_read(){
 manipulation_turn_on(){
     local brightness=1
 
-    echo "manipulation_turn_on $SELECTED_VALUE"
+    printf "LED: %s turned on \n" "$SELECTED_VALUE"
     led_brightness $SELECTED_VALUE $brightness
     pause
 }
 
 manipulation_turn_off(){
     local brightness=0
-
-    echo "manipulation_turn_on $SELECTED_VALUE"
+    printf "LED: %s turned off \n" "$SELECTED_VALUE"
     led_brightness $SELECTED_VALUE $brightness
     pause
 }
