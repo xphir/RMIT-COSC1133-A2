@@ -11,9 +11,10 @@ fi
 version=0.1
 LEDS_FOLDER=/sys/class/leds/
 
-SELECTED_VALUE=""
-TRIGGER_FILE=""
+STRING_SELECTED_VALUE=""
+STRING_TRIGGER_FILE=""
 declare -i SELECTED_ARRAY_NUM
+declare -i INT_FOLDER_ARRAY_LENGTH
 declare -i INT_TRIGGER_ARRAY_LENGTH
 declare -a ARRAY_FOLDER_NAMES
 declare -a ARRAY_TRIGGER_NAMES
@@ -48,12 +49,16 @@ welcome_message(){
 }
 
 read_options(){
-    let END_CASE=$FOLDER_COUNTER-1
-	local choice
-	read -p "Please enter a number (1-$FOLDER_COUNTER) for the led to configure or quit:" choice
+    local limit
+    local choice
+
+    INT_FOLDER_ARRAY_LENGTH=${#ARRAY_FOLDER_NAMES[@]}
+    let limit=$INT_FOLDER_ARRAY_LENGTH-1
+	
+	read -p "Please enter a number (1-$INT_FOLDER_ARRAY_LENGTH) for the led to configure or quit:" choice
 	case $choice in
-		[1-$END_CASE]*) manipulation_menu $choice;;
-		$FOLDER_COUNTER) exit 0;;
+		[1-$limit]*) manipulation_menu $choice;;
+		$INT_FOLDER_ARRAY_LENGTH) exit 0;;
 		*) echo -e "${RED}Error...${STD}" && sleep 2
 	esac
 }
@@ -67,13 +72,13 @@ create_folder_array(){
 }
 
 print_folder_array(){
-    FOLDER_COUNTER=1
+    local counter=1
     for FolderName in "${ARRAY_FOLDER_NAMES[@]}"
     do
-        echo "$FOLDER_COUNTER. $FolderName"
-        ((FOLDER_COUNTER++))
+        echo "$counter. $FolderName"
+        ((counter++))
     done
-    echo "$FOLDER_COUNTER. Quit"
+    echo "$counter. Quit"
     echo 
 }
 
@@ -95,7 +100,7 @@ manipulation_menu(){
 
 manipulation_message(){
     printf "\n"
-    echo "$SELECTED_VALUE"
+    echo "$STRING_SELECTED_VALUE"
     echo "=========="
     echo "What would you like to do with this led?"
     echo "1) turn on"
@@ -128,9 +133,9 @@ get_folder_array_selection(){
         if [ $read_selection -eq $counter ]
         then
             #Note this is global
-            SELECTED_VALUE="$FolderName"
+            STRING_SELECTED_VALUE="$FolderName"
             SELECTED_ARRAY_NUM=$counter
-            TRIGGER_FILE="${LEDS_FOLDER}${FolderName}/trigger"
+            STRING_TRIGGER_FILE="${LEDS_FOLDER}${FolderName}/trigger"
             return
         fi
         ((counter++))
@@ -144,15 +149,15 @@ get_folder_array_selection(){
 manipulation_turn_on(){
     local brightness=1
 
-    printf "LED: %s turned on \n" "$SELECTED_VALUE"
-    led_brightness $SELECTED_VALUE $brightness
+    printf "LED: %s turned on \n" "$STRING_SELECTED_VALUE"
+    led_brightness $STRING_SELECTED_VALUE $brightness
     pause
 }
 
 manipulation_turn_off(){
     local brightness=0
-    printf "LED: %s turned off \n" "$SELECTED_VALUE"
-    led_brightness $SELECTED_VALUE $brightness
+    printf "LED: %s turned off \n" "$STRING_SELECTED_VALUE"
+    led_brightness $STRING_SELECTED_VALUE $brightness
     pause
 }
 
@@ -183,7 +188,7 @@ led_brightness() {
 # ------------------------------------
 
 manipulation_associate_system(){
-    echo "manipulation_associate_system $SELECTED_VALUE"
+    echo "manipulation_associate_system $STRING_SELECTED_VALUE"
     while true
     do
         associate_system_message
@@ -201,7 +206,7 @@ associate_system_message(){
 }
 
 print_associate_system_array(){
-    ARRAY_TRIGGER_NAMES=(`cat "$TRIGGER_FILE"`)
+    ARRAY_TRIGGER_NAMES=(`cat "$STRING_TRIGGER_FILE"`)
     INT_TRIGGER_ARRAY_LENGTH=${#ARRAY_TRIGGER_NAMES[@]}
 
     #Line count is 5 to allow the menu headers
@@ -236,8 +241,8 @@ associate_system_read(){
 
 led_add_trigger(){
     local selected_trigger=$1
-    echo "selected_trigger $selected_trigger added to $SELECTED_VALUE"
-    echo "$selected_trigger" > "${LEDS_FOLDER}${SELECTED_VALUE}/trigger"
+    echo "selected_trigger $selected_trigger added to $STRING_SELECTED_VALUE"
+    echo "$selected_trigger" > "${LEDS_FOLDER}${STRING_SELECTED_VALUE}/trigger"
 }
 
 # -----------------------------------
@@ -246,13 +251,13 @@ led_add_trigger(){
 
 manipulation_process_performance(){
 
-    echo "manipulation_process_performance $SELECTED_VALUE"
+    echo "manipulation_process_performance $STRING_SELECTED_VALUE"
     pause
 }
 
 manipulation_stop_association(){
 
-    echo "manipulation_stop_association $SELECTED_VALUE"
+    echo "manipulation_stop_association $STRING_SELECTED_VALUE"
     pause
 }
 
