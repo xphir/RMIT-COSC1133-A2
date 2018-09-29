@@ -2,10 +2,11 @@
 
 version=0.1
 LEDS_FOLDER=/sys/class/leds/
+
 declare -a arrFolderNames
 
 main() {
-    create_folder_array
+    
     welcome_message
 }
 
@@ -25,15 +26,51 @@ create_folder_array(){
 }
 
 print_folder_array(){
-    COUNTER=1
+    FOLDER_COUNTER=1
     for FolderName in "${arrFolderNames[@]}"
     do
-        echo "$COUNTER. $FolderName"
-        ((COUNTER++))
+        echo "$FOLDER_COUNTER. $FolderName"
+        ((FOLDER_COUNTER++))
     done
-    echo "$COUNTER. Quit"
-    echo "Please enter a number (1-$COUNTER) for the led to configure or quit:"
+    echo "$FOLDER_COUNTER. Quit"
+    echo 
 }
 
-main $@
-exit 0
+pause(){
+  read -p "Press [Enter] key to continue..." fackEnterKey
+}
+
+manipulation_menu(){
+    echo "manipulation_menu() called for option $1"
+    pause
+}
+
+read_options(){
+    let END_CASE=$FOLDER_COUNTER-1
+	local choice
+	read -p "Please enter a number (1-$FOLDER_COUNTER) for the led to configure or quit:" choice
+	case $choice in
+		[1-$END_CASE]*) manipulation_menu $choice;;
+		$FOLDER_COUNTER) exit 0;;
+		*) echo -e "${RED}Error...${STD}" && sleep 2
+	esac
+}
+
+# ----------------------------------------------
+# Trap CTRL+C, CTRL+Z and quit singles
+# ----------------------------------------------
+trap '' SIGINT SIGQUIT SIGTSTP
+
+# -----------------------------------
+# Create array from folder stuct
+# ------------------------------------
+create_folder_array
+
+# -----------------------------------
+# Main logic - infinite loop
+# ------------------------------------
+while true
+do
+	welcome_message
+	read_options
+done
