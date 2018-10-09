@@ -21,7 +21,6 @@ declare -a ARRAY_TRIGGER_NAMES
 declare -a ARRAY_PROCESS_GREP
 
 declare MONITOR_SCRIPT_PATH="./monitor.sh"
-declare MONITOR_LED_TYPE="led0"
 declare MONITOR_SCRIPT_PID
 declare -i MONITOR_SCRIPT_RUNNING=0
 
@@ -268,6 +267,11 @@ led_add_trigger(){
 # Task 6:  Associate LED with the performance of a process
 # ------------------------------------
 
+manipulation_process_performance(){
+    associate_process_message
+    associate_process_read
+}
+
 associate_process_message(){
     printf "\n"
     echo "Associate LED with the performance of a process"
@@ -379,8 +383,8 @@ associate_process_launcher(){
     fi
 
     echo "Starting to monitor $monitor_type for $pid_value"
-    echo "Launching monitor script: $MONITOR_SCRIPT_PATH PID: $pid Monitor Type: $monitor_choice LED#: $MONITOR_LED_TYPE"
-    nohup $MONITOR_SCRIPT_PATH -p $pid -t $monitor_choice -l $MONITOR_LED_TYPE &>/dev/null &
+    echo "Launching monitor script: $MONITOR_SCRIPT_PATH PID: $pid Monitor Type: $monitor_choice LED#: $STRING_SELECTED_VALUE"
+    nohup $MONITOR_SCRIPT_PATH -p $pid -t $monitor_choice -l $STRING_SELECTED_VALUE &>/dev/null &
     MONITOR_SCRIPT_PID=$!
     MONITOR_SCRIPT_RUNNING=1
     echo "Monitor script launched with PID: $MONITOR_SCRIPT_PID"
@@ -401,7 +405,7 @@ manipulation_stop_association(){
         disown $MONITOR_SCRIPT_PID
         kill -SIGTERM $MONITOR_SCRIPT_PID
         sleep 0.1
-        led_brightness $MONITOR_LED_TYPE 0
+        led_brightness $STRING_SELECTED_VALUE 0
         MONITOR_SCRIPT_RUNNING=0
         echo "Perforance monitor script (PID:$MONITOR_SCRIPT_PID) has been stoped"
     else
