@@ -33,9 +33,8 @@ associate_process_read(){
         for process in $process_array
         do
             if [$count -ne $process_array_size]
-            do
+            then
                 printf "%s) %s\n" "$count" "$process"
-            done
             fi
             ((count++))
         done
