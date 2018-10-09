@@ -21,7 +21,7 @@ associate_process_read(){
     #read -p "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]:" monitor_choice
     #echo "starting to monitor $program_selected"
 
-    process_array=$(ps aux | grep $program_choice | awk '{print $11}')
+    process_array=($(ps aux | grep $program_choice | awk '{print $11}'))
     process_array_size=${#process_array[@]}
     
     echo "process_array_size: $process_array_size"
