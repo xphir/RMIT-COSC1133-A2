@@ -18,24 +18,31 @@ associate_process_read(){
     local count
     local -a process_array
 	read -p "Please enter the name of the program to monitor(partial names are ok):" program_choice
-    read -p "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]:" monitor_choice
-    echo "starting to monitor $program_selected"
+    #read -p "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]:" monitor_choice
+    #echo "starting to monitor $program_selected"
 
     process_array=$(ps aux | grep $program_choice | awk '{print $11}')
     process_array_size=${#process_array[@]}
+    
     echo "process_array_size: $process_array_size"
-    if [ ${#process_array[@]} -gt 1 ]
+    if [ ${#process_array[@]} -gt 2 ]
     then
         echo "Name Conflict"
         echo "-------------"
         echo "I have detected a name conflict. Do you want to monitor:"
         for process in $process_array
         do
-            printf "%s) %s\n" "$count" "$process"
-        ((count++))
+            if [$count -ne $process_array_size]
+            do
+                printf "%s) %s\n" "$count" "$process"
+            done
+            fi
+            ((count++))
         done
+    elif [ ${#process_array[@]} -eq 2 ]
+        echo "starting to monitor ${process_array[1]}"
     else
-        echo "starting to monitor $process_array"
+        echo "no matches"
     fi
 }
 
