@@ -361,7 +361,7 @@ associate_process_search_select(){
     read -p "Please enter a number (1-$array_size) for your choice:" array_selection
     case $array_selection in
         [0-$((array_size -1))]) associate_process_launcher $array_selection $monitor_choice;;
-        $array_size) manipulation_menu;;
+        $array_size) manipulation_menu $INT_SELECTED_FOLDER_ARRAY_NUM;;
         *) echo -e "${RED}Error...${STD}" && sleep 2
     esac
 }
@@ -382,17 +382,15 @@ associate_process_launcher(){
         manipulation_stop_association
     fi
 
-    echo "Starting to monitor $monitor_type for $pid_value"
+    echo "Starting monitor $monitor_type for $pid_value"
     echo "Launching monitor script: $MONITOR_SCRIPT_PATH PID: $pid Monitor Type: $monitor_choice LED#: $STRING_SELECTED_VALUE"
+    
     nohup $MONITOR_SCRIPT_PATH -p $pid -t $monitor_choice -l $STRING_SELECTED_VALUE &>/dev/null &
     MONITOR_SCRIPT_PID=$!
     MONITOR_SCRIPT_RUNNING=1
     echo "Monitor script launched with PID: $MONITOR_SCRIPT_PID"
-    sleep 5
-
-    manipulation_stop_association
-
-    manipulation_menu
+    sleep 0.1
+    manipulation_menu $INT_SELECTED_FOLDER_ARRAY_NUM
 }
 
 # -----------------------------------
