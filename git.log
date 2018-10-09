@@ -1,0 +1,315 @@
+commit 3110f6c1ce9d46b80f06b29a4df0ed855ce54947
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:27:56 2018 +1100
+
+    remove test.sh
+
+commit 9cfb55c1d2fd97072d1f587f46fc059992101bdd
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:24:14 2018 +1100
+
+    wip
+
+commit ac362049dec09432ffb0749149767dabe3bbeb3a
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:23:38 2018 +1100
+
+    wip
+
+commit 8cca63b3610c1821ecf0010bc2f2ec7304e4fa7f
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:20:38 2018 +1100
+
+    wip
+
+commit 1e491ba796a72c42cdd93a64364f8d8e2ee320f9
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:18:00 2018 +1100
+
+    wip
+
+commit bd276d91ebe856bde6f0468568d53e67d8b280de
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:14:10 2018 +1100
+
+    enable chmod +x
+
+commit 74bed9bf1364d02038af8b0afaf35f2011061537
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:10:56 2018 +1100
+
+    task 6 and 7 complete
+
+commit 225464b02ea94f21d5d171d53674bc390d63f269
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:10:36 2018 +1100
+
+    add monitor.sh
+
+commit 802a9c1903186e00f9ff7d3e35a97b3cf11c2a4d
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 16:02:46 2018 +1100
+
+    added process selection system
+
+commit 99a7897bef94835ee6474210015de09b6572b783
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 13:05:50 2018 +1100
+
+    wip
+
+commit 68afbb1bc94ad9776e9dd9605fb6667ab6a20982
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 13:04:50 2018 +1100
+
+    wip
+
+commit 7afd3076d0a37270cfd05f07501a00ea9337c2f5
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 13:03:44 2018 +1100
+
+    wip
+
+commit 66a7304e82a80c328f4fd14d4efa276debed389c
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 12:59:00 2018 +1100
+
+    wip
+
+commit 287e54c9660f3e8463185355f394101f0e5935aa
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 12:58:21 2018 +1100
+
+    wip
+
+commit e4a5e1b310acd65d81b8ecb1fccb8be5e86e4614
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 12:57:33 2018 +1100
+
+    wip
+
+commit 596a9b8ad96b0f75851846253344d94de19b37ff
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 11:45:47 2018 +1100
+
+    testing process attach
+
+commit dbc4cfd7dbe915ff3fb763ccdb0d5f78d17b8bf7
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 11:42:32 2018 +1100
+
+    enable chmod +x
+
+commit 352770be0473e889925841bd0fd70830c2bb869c
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sun Sep 30 12:19:56 2018 +1000
+
+    small echo changes
+
+commit 98e5058db81da4b520e734a6bd24212359c43da2
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sun Sep 30 12:18:43 2018 +1000
+
+    task 6 wip
+
+commit e5e206db5259dd2db20eed2ca4d4ae0be03c2182
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sun Sep 30 00:21:33 2018 +1000
+
+    fixing menu selections and returns
+
+commit ccc7621ab9845b1eb109ef575db562a81ed65a55
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 23:19:59 2018 +1000
+
+    setting localised variables where aplicable
+    
+    also renaming global variables with type and more accurate desc
+
+commit 2c28be6c17e2ba9ecaae14e7602a727078c0ab05
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 23:10:13 2018 +1000
+
+    var name changes
+
+commit 7f14b9d4b0b6da51484abd249819709443859739
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 23:01:15 2018 +1000
+
+    fixing task 5 code
+
+commit ac46d283326e726ce65583c926cf9699df6ad46d
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 22:57:35 2018 +1000
+
+    Rearrange code into task groups
+
+commit 4ff4eec17e61738ac951975c66c61b9e0567c7ff
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 18:22:47 2018 +1000
+
+    adding line check then pause to large prints
+
+commit b561c262a87229065d674084407bf2d9b4bde682
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 18:22:26 2018 +1000
+
+    printf fixes
+
+commit b71d57ba283151d3a30383e70244d98bbf79df73
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 18:21:57 2018 +1000
+
+    printf fixes
+
+commit be6348f5989eb856614114c89ebd0de8ce09ad8d
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 18:21:36 2018 +1000
+
+    check if user is root
+    
+    if user isnt root exit
+
+commit d52ef9b385a9dc3c456c2a0a4cda59e25f86f474
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 17:59:29 2018 +1000
+
+    line removal
+
+commit 8f1be3df43bcb804e6c6b14b214d994a032572fd
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 17:59:03 2018 +1000
+
+    adding functions
+    
+    led_triggers()
+    led_brightness()
+
+commit af43a275efbacde72c884f5471cb63d91703da0d
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 17:58:35 2018 +1000
+
+    adding methods
+    
+    manipulation_associate_system()
+    associate_system_message()
+    print_associate_system_array()
+    associate_system_read()
+
+commit a842e510d8571c274f5ff350ce584168bff010b0
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 17:57:51 2018 +1000
+
+    changing param and var names
+
+commit dda55a5506229a020bb755689536a2d0ea95566b
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 17:56:08 2018 +1000
+
+    removing params
+
+commit 8005db6d6439ef20e079a3eed2b568c83147ebd7
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 17:55:23 2018 +1000
+
+    adding new global vars
+
+commit 1a7ce38566e68507eb5423eb30525b76df9828ff
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 16:22:46 2018 +1000
+
+    fixing menu loop
+    
+    was having issues with return to main menu, this is now resolved
+
+commit 83eeef38fff2b0a4f4a641ce55acc0a8e19e0f99
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 16:22:10 2018 +1000
+
+    adding global var SELECTED_VALUE
+
+commit c36d9edab63aa889d979fc4d6870ceff1036790d
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 16:21:47 2018 +1000
+
+    added a main() function
+    
+    this allows it to be called when the user wants to return to the main menu
+
+commit 1e74f38c6b51e914c8f86259bad4de18b33b836a
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 15:44:31 2018 +1000
+
+    add manipulation_* filler functions
+
+commit 7970f18316f4b04aa836460e3251f13eec394db5
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 15:44:01 2018 +1000
+
+    add manipulation_read() function
+
+commit b8e36d3f5c1b0c471dfd4297e51ddaca8d80c744
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 15:43:36 2018 +1000
+
+    add manipulation_message() function
+
+commit 206d198b5c2e9570a327a1fc4e2d868a323d356e
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 15:42:41 2018 +1000
+
+    add manipulation_menu() while loop
+
+commit 723081a9393956c9ea9b54f58ae1c1350873f621
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 15:41:35 2018 +1000
+
+    add get_folder_array_selection() function
+
+commit 64ae0058e38031a1611f60b8c84ea7978e7544a7
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 15:40:54 2018 +1000
+
+    remove main() function
+
+commit 134aa4d5212785f455b711b16164aa51c15b518a
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 14:56:59 2018 +1000
+
+    add menu selection (read choice)
+    
+    Added read_options(), pause(), manipulation_menu(), added infinite read options loop, added Trap for [CTRL+C, CTRL+Z and quit singles]
+
+commit a6157ef689d670b646e0c35fd0318380d8f79b93
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 14:01:33 2018 +1000
+
+    completed dynamic welcome menu
+    
+    added welcome_message(), create_folder_array() print_folder_array()
+
+commit 8f772dca786512907314614656f1f7a97df2330e
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 13:03:22 2018 +1000
+
+    adding more text to welcome_menu
+
+commit 5525acaf08b2e6babab20af224f6059a72a4412d
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 12:53:52 2018 +1000
+
+    adding basic welcome menu
+
+commit 74771ac130834971ff38da49f8c60b76bf4e8bb9
+Author: Elliot Schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 12:49:46 2018 +1000
+
+    project start
+    
+    basic main with hello world for testing
+
+commit 5a839207ae870b9c838cf06eb06fc15760e0de3a
+Author: rmit-s3530160-elliot-schot <s3530160@student.rmit.edu.au>
+Date:   Sat Sep 29 12:47:58 2018 +1000
+
+    Initial commit
