@@ -39,6 +39,7 @@ associate_process_read(){
             ((count++))
         done
     elif [ ${#process_array[@]} -eq 2 ]
+    then
         echo "starting to monitor ${process_array[1]}"
     else
         echo "no matches"
