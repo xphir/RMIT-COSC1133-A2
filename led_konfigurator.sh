@@ -20,6 +20,11 @@ declare -a ARRAY_FOLDER_NAMES
 declare -a ARRAY_TRIGGER_NAMES
 declare -a ARRAY_PROCESS_GREP
 
+declare MONITOR_SCRIPT_PATH="./monitor.sh"
+declare MONITOR_LED_TYPE="led0"
+declare MONITOR_SCRIPT_PID
+declare -i MONITOR_SCRIPT_RUNNING=0
+
 # -----------------------------------
 # Utility Functions
 # ------------------------------------
@@ -263,11 +268,6 @@ led_add_trigger(){
 # Task 6:  Associate LED with the performance of a process
 # ------------------------------------
 
-manipulation_process_performance(){
-    associate_process_message
-    associate_process_read
-}
-
 associate_process_message(){
     printf "\n"
     echo "Associate LED with the performance of a process"
@@ -300,7 +300,7 @@ associate_process_search(){
     local -i process_array_size
     local -i result_type
 
-    ARRAY_PROCESS_GREP=($(ps aux | grep $program_choice |  grep -v grep | awk '{print $11}'))
+    ARRAY_PROCESS_GREP=($(ps aux | grep $program_choice |  grep -v grep | awk '{print $2}'))
     process_array_size=${#ARRAY_PROCESS_GREP[@]}
 
     #Get result_type
@@ -336,13 +336,15 @@ associate_process_search(){
 associate_process_print_array(){
     local -i count=0
     local -i array_size=${#ARRAY_PROCESS_GREP[@]}
+    local pid_value
 
     echo "Name Conflict"
     echo "-------------"
     echo "I have detected a name conflict. Do you want to monitor:"
     for process in ${ARRAY_PROCESS_GREP[@]}
     do
-        printf "%s) %s\n" "$count" "$process"
+        pid_value=$(ps -p $process -o cmd=)
+        printf "%s) %s\n" "$count" "$pid_value"
         ((count++))
     done
     printf "%s) %s\n" "$count" "return"
@@ -355,7 +357,7 @@ associate_process_search_select(){
     read -p "Please enter a number (1-$array_size) for your choice:" array_selection
     case $array_selection in
         [0-$((array_size -1))]) associate_process_launcher $array_selection $monitor_choice;;
-        $array_size) main;;
+        $array_size) manipulation_menu;;
         *) echo -e "${RED}Error...${STD}" && sleep 2
     esac
 }
@@ -365,18 +367,26 @@ associate_process_launcher(){
     local -i monitor_choice=$2
     local monitor_type
     local -i array_size=${#ARRAY_PROCESS_GREP[@]}
+    local pid
+    local pid_value
+
+    pid=${ARRAY_PROCESS_GREP[$array_selection]}
+    pid_value=$(ps -p $pid -o cmd=)
     
-    if [ $monitor_choice -eq 1 ]
+    if [ $MONITOR_SCRIPT_RUNNING -eq 1 ]
     then
-        monitor_type="memory"
-    elif [ $monitor_choice -eq 2 ]
-    then
-        monitor_type="cpu"
-    else
-        echo "This should never happen\n"
+        manipulation_stop_association
     fi
 
-    echo "starting to monitor $monitor_type for ${ARRAY_PROCESS_GREP[$array_selection]}"
+    echo "Starting to monitor $monitor_type for $pid_value"
+    echo "Launching monitor script: $MONITOR_SCRIPT_PATH PID: $pid Monitor Type: $monitor_choice LED#: $MONITOR_LED_TYPE"
+    nohup $MONITOR_SCRIPT_PATH -p $pid -t $monitor_choice -l $MONITOR_LED_TYPE &>/dev/null &
+    MONITOR_SCRIPT_PID=$!
+    MONITOR_SCRIPT_RUNNING=1
+    echo "Monitor script launched with PID: $MONITOR_SCRIPT_PID"
+    sleep 5
+
+    manipulation_stop_association
 
     manipulation_menu
 }
@@ -386,11 +396,19 @@ associate_process_launcher(){
 # ------------------------------------
 
 manipulation_stop_association(){
-
-    echo "manipulation_stop_association $STRING_SELECTED_VALUE"
-    pause
+    if [ -e /proc/${MONITOR_SCRIPT_PID} -a /proc/${MONITOR_SCRIPT_PID}/exe ]
+    then
+        disown $MONITOR_SCRIPT_PID
+        kill -SIGTERM $MONITOR_SCRIPT_PID
+        sleep 0.1
+        led_brightness $MONITOR_LED_TYPE 0
+        MONITOR_SCRIPT_RUNNING=0
+        echo "Perforance monitor script (PID:$MONITOR_SCRIPT_PID) has been stoped"
+    else
+        echo "No script running..."
+        MONITOR_SCRIPT_RUNNING=0
+    fi
 }
-
 
 # ----------------------------------------------
 # Trap CTRL+C, CTRL+Z and quit singles
