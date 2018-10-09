@@ -32,7 +32,7 @@ associate_process_read(){
         echo "I have detected a name conflict. Do you want to monitor:"
         for process in $process_array
         do
-            if [$count -ne $process_array_size]
+            if [ $count -ne $process_array_size ]
             then
                 printf "%s) %s\n" "$count" "$process"
             fi
