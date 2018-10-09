@@ -9,3 +9,6 @@ monitor.sh | background script file to monitor process performance containing ta
 git.log | git logs as per requirements
 
 ## Instructions
+```
+sudo ./led_konfigurator.sh
+```
