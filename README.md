@@ -3,6 +3,6 @@ USAP Assignment 2
 
 File | Usage
 ------------ | -------------
-led_konfigurator.sh | main script file
-monitor.sh | background script file
-git.log | git logs
+led_konfigurator.sh | main script file to complete tasks 1-7
+monitor.sh | background script file to monitor process performance containing task 6
+git.log | git logs as per requirements
