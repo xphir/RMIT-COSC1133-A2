@@ -15,7 +15,7 @@ associate_process_read(){
 	local program_choice
     local monitor_choice
     local program_selected
-    local count
+    local count=0
     local -a process_array
 	read -p "Please enter the name of the program to monitor(partial names are ok):" program_choice
     #read -p "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]:" monitor_choice
