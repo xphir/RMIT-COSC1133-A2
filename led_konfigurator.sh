@@ -384,7 +384,7 @@ associate_process_launcher(){
 
     echo "Starting monitor $monitor_type for $pid_value"
     echo "Launching monitor script: $MONITOR_SCRIPT_PATH PID: $pid Monitor Type: $monitor_choice LED#: $STRING_SELECTED_VALUE"
-    
+
     nohup $MONITOR_SCRIPT_PATH -p $pid -t $monitor_choice -l $STRING_SELECTED_VALUE &>/dev/null &
     MONITOR_SCRIPT_PID=$!
     MONITOR_SCRIPT_RUNNING=1
@@ -398,7 +398,11 @@ associate_process_launcher(){
 # ------------------------------------
 
 manipulation_stop_association(){
-    if [ -e /proc/${MONITOR_SCRIPT_PID} -a /proc/${MONITOR_SCRIPT_PID}/exe ]
+    if [-z "$MONITOR_SCRIPT_PID"]
+    then
+        echo "No script running..."
+        MONITOR_SCRIPT_RUNNING=0
+    elif [ -e /proc/${MONITOR_SCRIPT_PID} -a /proc/${MONITOR_SCRIPT_PID}/exe ]
     then
         disown $MONITOR_SCRIPT_PID
         kill -SIGTERM $MONITOR_SCRIPT_PID
