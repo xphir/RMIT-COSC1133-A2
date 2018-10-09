@@ -18,7 +18,7 @@ declare -i INT_FOLDER_ARRAY_LENGTH
 declare -i INT_TRIGGER_ARRAY_LENGTH
 declare -a ARRAY_FOLDER_NAMES
 declare -a ARRAY_TRIGGER_NAMES
-
+declare -a ARRAY_PROCESS_GREP
 
 # -----------------------------------
 # Utility Functions
@@ -264,10 +264,8 @@ led_add_trigger(){
 # ------------------------------------
 
 manipulation_process_performance(){
-
-    echo "manipulation_process_performance $STRING_SELECTED_VALUE"
     associate_process_message
-    #associate_process_read
+    associate_process_read
 }
 
 associate_process_message(){
@@ -278,32 +276,110 @@ associate_process_message(){
 
 associate_process_read(){
 	local program_choice
-    local monitor_choice
-    local program_selected
-    local count
-    local -a process_array
-	read -p "Please enter the name of the program to monitor(partial names are ok):" program_choice
-    read -p "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]:" monitor_choice
-    echo "starting to monitor $program_selected"
 
-    process_array=$(ps aux | grep $program_choice | awk '{print $11}')
-    process_array_size=${#process_array[@]}
-    echo "process_array_size: $process_array_size"
-    if [ ${#process_array[@]} -gt 1 ]
+    while true
+    do
+        read -p "Please enter the name of the program to monitor(partial names are ok):" program_choice
+        associate_process_read_type $program_choice
+    done
+}
+
+associate_process_read_type(){
+    local program_choice=$1
+	local monitor_choice
+	read -p "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]:" monitor_choice
+    case $monitor_choice in
+		[1-2]) associate_process_search $program_choice $monitor_choice;;
+		*) echo -e "${RED}Error...${STD}" && sleep 2
+	esac
+}
+
+associate_process_search(){
+    local program_choice=$1
+    local monitor_choice=$2
+    local -i process_array_size
+    local -i result_type
+
+    ARRAY_PROCESS_GREP=($(ps aux | grep $program_choice |  grep -v grep | awk '{print $11}'))
+    process_array_size=${#ARRAY_PROCESS_GREP[@]}
+
+    #Get result_type
+    if [ $process_array_size -gt 1 ]
     then
-        echo "Name Conflict"
-        echo "-------------"
-        echo "I have detected a name conflict. Do you want to monitor:"
-        for process in $process_array
-        do
-            printf "%s) %s\n" "$count" "$process"
-        ((count++))
-        done
+        associate_process_print_array
+        let result_type=1
+    elif [ ${#ARRAY_PROCESS_GREP[@]} -eq 1 ]
+    then
+        let result_type=2
     else
-        echo "starting to monitor $process_array"
+        let result_type=3
+    fi
+
+    #Process result_type
+    if [ $result_type -eq 1 ]
+    then
+        while true
+        do
+            associate_process_search_select $monitor_choice
+        done
+    elif [ $result_type -eq 2 ]
+    then
+        associate_process_launcher 0 $monitor_choice
+    elif [ $result_type -eq 3 ]
+    then
+        echo "No matches found... returning"
+    else
+        echo "This should never happen"
     fi
 }
 
+associate_process_print_array(){
+    local -i count=0
+    local -i array_size=${#ARRAY_PROCESS_GREP[@]}
+
+    echo "Name Conflict"
+    echo "-------------"
+    echo "I have detected a name conflict. Do you want to monitor:"
+    for process in ${ARRAY_PROCESS_GREP[@]}
+    do
+        printf "%s) %s\n" "$count" "$process"
+        ((count++))
+    done
+    printf "%s) %s\n" "$count" "return"
+}
+
+associate_process_search_select(){
+    local -i array_size=${#ARRAY_PROCESS_GREP[@]}
+    local -i monitor_choice=$1
+    local array_selection
+    read -p "Please enter a number (1-$array_size) for your choice:" array_selection
+    case $array_selection in
+        [0-$((array_size -1))]) associate_process_launcher $array_selection $monitor_choice;;
+        $array_size) main;;
+        *) echo -e "${RED}Error...${STD}" && sleep 2
+    esac
+}
+
+associate_process_launcher(){
+    local -i array_selection=$1
+    local -i monitor_choice=$2
+    local monitor_type
+    local -i array_size=${#ARRAY_PROCESS_GREP[@]}
+    
+    if [ $monitor_choice -eq 1 ]
+    then
+        monitor_type="memory"
+    elif [ $monitor_choice -eq 2 ]
+    then
+        monitor_type="cpu"
+    else
+        echo "This should never happen\n"
+    fi
+
+    echo "starting to monitor $monitor_type for ${ARRAY_PROCESS_GREP[$array_selection]}"
+
+    manipulation_menu
+}
 
 # -----------------------------------
 # Task 7: Unassociate an LED with performance monitoring
