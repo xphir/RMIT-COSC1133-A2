@@ -398,7 +398,7 @@ associate_process_launcher(){
 # ------------------------------------
 
 manipulation_stop_association(){
-    if [-z "$MONITOR_SCRIPT_PID"]
+    if [ -z "$MONITOR_SCRIPT_PID" ]
     then
         echo "No script running..."
         MONITOR_SCRIPT_RUNNING=0
