@@ -1,6 +1,5 @@
-# COSC1133-A2 | USAP Assignment 2
-
-
+# COSC1133-A2
+USAP Assignment 2
 
 File | Usage
 ------------ | -------------
