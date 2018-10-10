@@ -197,6 +197,7 @@ led_brightness() {
 # Task 5:  Associate LED with a system event
 # ------------------------------------
 
+#This fucntion calls the subprocesses
 manipulation_associate_system(){
     echo "manipulation_associate_system $STRING_SELECTED_VALUE"
     while true
@@ -206,6 +207,7 @@ manipulation_associate_system(){
     done
 }
 
+#This fucntion prints the section header
 associate_system_message(){
     printf "\n"
     echo "Associate Led with a system Event"
@@ -215,7 +217,11 @@ associate_system_message(){
     print_associate_system_array
 }
 
+#TODO process the currently selected led trigger [Thing] to Thing*
+#This fucntion prints the system event triggers
 print_associate_system_array(){
+    local regex="(\[)([^\[?].*?)(\])"
+    local print_value
     #Line count is 5 to allow the menu headers
     local count=1
     local screen_size=$(tput lines)
@@ -227,8 +233,13 @@ print_associate_system_array(){
 
     for trigger in "${ARRAY_TRIGGER_NAMES[@]}"
     do
-        printf "%s) %s\n" "$count" "$trigger"
-        
+        if [[ $trigger =~ $REGEX ]]; 
+        then
+            print_value=($(echo $STRtriggerING | sed 's/.*\[\([^]]*\)\].*/\1*/g'))
+            printf "%s) %s\n" "$count" "$print_value"           
+        else
+            printf "%s) %s\n" "$count" "$trigger"
+        fi
         ((count++))
         ((screen_buffer++))
         if [ $screen_buffer -gt $screen_size ]
@@ -240,6 +251,7 @@ print_associate_system_array(){
     printf "%s) %s\n" "$count" "Quit to previous menu"
 }
 
+#This fucntion allows the user to pick the system event trigger
 associate_system_read(){
 	local choice
     local limit
@@ -252,6 +264,7 @@ associate_system_read(){
 	esac
 }
 
+#This fucntion adds the system event trigger to the led
 led_add_trigger(){
     local int_selected_trigger=$1
 
@@ -267,17 +280,20 @@ led_add_trigger(){
 # Task 6:  Associate LED with the performance of a process
 # ------------------------------------
 
+#This fucntion calls the subprocesses
 manipulation_process_performance(){
     associate_process_message
     associate_process_read
 }
 
+#This fucntion prints the section header
 associate_process_message(){
     printf "\n"
     echo "Associate LED with the performance of a process"
     echo "------------------------------------------------"
 }
 
+#This fucntion gets the program the user wants to monitor
 associate_process_read(){
 	local program_choice
 
@@ -288,6 +304,7 @@ associate_process_read(){
     done
 }
 
+#This fucntion gets the performance monitor type from the user
 associate_process_read_type(){
     local program_choice=$1
 	local monitor_choice
@@ -298,6 +315,7 @@ associate_process_read_type(){
 	esac
 }
 
+#This function processes the program choice and choses which function to call depending on the result size
 associate_process_search(){
     local program_choice=$1
     local monitor_choice=$2
@@ -337,6 +355,7 @@ associate_process_search(){
     fi
 }
 
+#This function prints the multiple processes when there is multiple process matches
 associate_process_print_array(){
     local -i count=0
     local -i array_size=${#ARRAY_PROCESS_GREP[@]}
@@ -354,6 +373,7 @@ associate_process_print_array(){
     printf "%s) %s\n" "$count" "return"
 }
 
+#This function is used to pick between multiple processes when there is multiple process matches
 associate_process_search_select(){
     local -i array_size=${#ARRAY_PROCESS_GREP[@]}
     local -i monitor_choice=$1
@@ -366,6 +386,7 @@ associate_process_search_select(){
     esac
 }
 
+#This function launches the performance monitor script
 associate_process_launcher(){
     local -i array_selection=$1
     local -i monitor_choice=$2
@@ -389,7 +410,7 @@ associate_process_launcher(){
     MONITOR_SCRIPT_PID=$!
     MONITOR_SCRIPT_RUNNING=1
     echo "Monitor script launched with PID: $MONITOR_SCRIPT_PID"
-    sleep 0.1
+    pause
     manipulation_menu $INT_SELECTED_FOLDER_ARRAY_NUM
 }
 
@@ -397,11 +418,14 @@ associate_process_launcher(){
 # Task 7: Unassociate an LED with performance monitoring
 # ------------------------------------
 
+#Stop the performance monitor script
 manipulation_stop_association(){
+    #Check if any scripts where ever called
     if [ -z "$MONITOR_SCRIPT_PID" ]
     then
         echo "No script running..."
         MONITOR_SCRIPT_RUNNING=0
+    #Check if the recorded script PID is currently running then close it
     elif [ -e /proc/${MONITOR_SCRIPT_PID} -a /proc/${MONITOR_SCRIPT_PID}/exe ]
     then
         disown $MONITOR_SCRIPT_PID
@@ -410,6 +434,8 @@ manipulation_stop_association(){
         led_brightness $STRING_SELECTED_VALUE 0
         MONITOR_SCRIPT_RUNNING=0
         echo "Perforance monitor script (PID:$MONITOR_SCRIPT_PID) has been stoped"
+        pause
+    #If the script was called but is no longer running
     else
         echo "No script running..."
         MONITOR_SCRIPT_RUNNING=0
