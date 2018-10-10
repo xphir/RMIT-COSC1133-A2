@@ -3,23 +3,34 @@
 # -----------------------------------
 # Declarations
 # ------------------------------------
+
+#This checks the script is running as root
 if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     echo "Not running as root"
     exit
 fi
 
-version=0.1
+version=1
+#The LEDs folder
 LEDS_FOLDER=/sys/class/leds/
 
+#The current selected LED
 STRING_SELECTED_VALUE=""
+#The current selected trigger
 STRING_TRIGGER_FILE=""
+#The current selected folder array + releated folder array info
+declare -a ARRAY_FOLDER_NAMES
 declare -i INT_SELECTED_FOLDER_ARRAY_NUM
 declare -i INT_FOLDER_ARRAY_LENGTH
+
+#The current selected trigger array + releated trigger array info
 declare -i INT_TRIGGER_ARRAY_LENGTH
-declare -a ARRAY_FOLDER_NAMES
 declare -a ARRAY_TRIGGER_NAMES
+
+#The array of the processes search
 declare -a ARRAY_PROCESS_GREP
 
+#The external script information
 declare MONITOR_SCRIPT_PATH="./monitor.sh"
 declare MONITOR_SCRIPT_PID
 declare -i MONITOR_SCRIPT_RUNNING=0
@@ -27,10 +38,13 @@ declare -i MONITOR_SCRIPT_RUNNING=0
 # -----------------------------------
 # Utility Functions
 # ------------------------------------
+
+#This function is a generic pause
 pause(){
   read -p "Press [Enter] key to continue..." fackEnterKey
 }
 
+#this function is a custom pause
 pause_custom(){
     local input=$1
     read -p "$input" fackEnterKey
@@ -41,6 +55,8 @@ pause_custom(){
 # -----------------------------------
 # Task 2: Script launch
 # ------------------------------------
+
+#This is the main function that calls the sub functions
 main(){
     while true
     do
@@ -49,6 +65,7 @@ main(){
     done
 }
 
+#This function prints the menu
 main_message(){
     printf "\n"
     echo "Welcome to Led_Konfigurator!"
@@ -57,6 +74,7 @@ main_message(){
     print_folder_array
 }
 
+#This function allows the user to select the folders
 main_read(){
     local limit
     local choice
@@ -72,6 +90,8 @@ main_read(){
 	esac
 }
 
+#TODO SELECT FOLDERS ONLY
+#This fucntion gets the contents of the led folder and turns it into an array
 create_folder_array(){
     for folder in $LEDS_FOLDER*
     do
@@ -80,6 +100,7 @@ create_folder_array(){
     done
 }
 
+#This function prints the folders availible to select
 print_folder_array(){
     local counter=1
     for FolderName in "${ARRAY_FOLDER_NAMES[@]}"
@@ -94,6 +115,8 @@ print_folder_array(){
 # -----------------------------------
 # Task 3: LED Manipulation Menu
 # ------------------------------------
+
+#This function calls the sub functions
 manipulation_menu(){
     local read_selection=$1
 
@@ -107,6 +130,7 @@ manipulation_menu(){
     done
 }
 
+#This function prints the menu options
 manipulation_message(){
     printf "\n"
     echo "$STRING_SELECTED_VALUE"
@@ -120,6 +144,7 @@ manipulation_message(){
     echo "6) quit to main menu"
 }
 
+#This function gets the users menu selection
 manipulation_read(){
     local choice
 	read -p "Please enter a number (1-6) for your choice:" choice
@@ -134,6 +159,7 @@ manipulation_read(){
     esac
 }
 
+#This function sets the global variable for the current selected folders
 get_folder_array_selection(){
     local read_selection=$1
     local counter=1
@@ -156,6 +182,7 @@ get_folder_array_selection(){
 # Task 4:  Turn on and off the led
 # ------------------------------------
 
+#This fucntion turns on the led
 manipulation_turn_on(){
     local brightness=1
 
@@ -164,6 +191,7 @@ manipulation_turn_on(){
     pause
 }
 
+#This fucntion turns off the led
 manipulation_turn_off(){
     local brightness=0
     printf "LED: %s turned off \n" "$STRING_SELECTED_VALUE"
@@ -171,26 +199,25 @@ manipulation_turn_off(){
     pause
 }
 
-led_triggers() {
-   local led=$1
-   local trigger=$2
+#This fucntion adds the system event trigger to the led
+led_add_trigger(){
+    local led=$1
+    local int_selected_trigger=$2
 
-   if [ -z "$trigger" ]; then
-       cat "$leds/$led/trigger"
-   else
-       echo "$trigger" > "$leds/$led/trigger"
-   fi
+    #this is set to -1 because the array starts at 0 not 1
+    let int_selected_trigger=$int_selected_trigger-1
+    local selected_trigger=${ARRAY_TRIGGER_NAMES[$int_selected_trigger]}
+    
+    echo "selected_trigger $selected_trigger added to $led"
+    echo "$selected_trigger" > "${LEDS_FOLDER}${led}/trigger"
 }
 
+#this function turns the led on or off brightness can be 0 to 255
 led_brightness() {
    local led=$1
    local brightness=$2
-
-   if [ -z "$brightness" ]; then
-       cat "${LEDS_FOLDER}${led}/brightness"
-   else
-       echo "$brightness" > "${LEDS_FOLDER}${led}/brightness"
-   fi
+   
+   echo "$brightness" > "${LEDS_FOLDER}${led}/brightness"
 }
 
 # -----------------------------------
@@ -217,8 +244,9 @@ associate_system_message(){
     print_associate_system_array
 }
 
-#TODO process the currently selected led trigger [Thing] to Thing*
+
 #This fucntion prints the system event triggers
+#It also does a regex match for [thing] and does a sed replace to thing*
 print_associate_system_array(){
     local regex="(\[)([^\[?].*?)(\])"
     local print_value
@@ -259,22 +287,10 @@ associate_system_read(){
     let limit=$INT_TRIGGER_ARRAY_LENGTH+1
 	read -p "Please select an option (1-$limit):" choice
     case $choice in
-		[1-$INT_TRIGGER_ARRAY_LENGTH]) led_add_trigger $choice;;
+		[1-$INT_TRIGGER_ARRAY_LENGTH]) led_add_trigger $STRING_SELECTED_VALUE $choice;;
 		$limit) manipulation_menu $INT_SELECTED_FOLDER_ARRAY_NUM;;
 		*) echo -e "${RED}Error...${STD}" && sleep 2
 	esac
-}
-
-#This fucntion adds the system event trigger to the led
-led_add_trigger(){
-    local int_selected_trigger=$1
-
-    #this is set to -1 because the array starts at 0 not 1
-    let int_selected_trigger=$int_selected_trigger-1
-    local selected_trigger=${ARRAY_TRIGGER_NAMES[$int_selected_trigger]}
-    
-    echo "selected_trigger $selected_trigger added to $STRING_SELECTED_VALUE"
-    echo "$selected_trigger" > "${LEDS_FOLDER}${STRING_SELECTED_VALUE}/trigger"
 }
 
 # -----------------------------------
