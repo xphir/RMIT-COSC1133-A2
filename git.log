@@ -1,3 +1,105 @@
+commit 0115b7d99bde7e17e5f2132858674db5a000e71f
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Wed Oct 10 20:30:38 2018 +1100
+
+    folder array fix to match folders only
+
+commit c0102bbb480e267a2bf85ddea2e705a31eb035f2
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Wed Oct 10 20:19:44 2018 +1100
+
+    fix case selections
+
+commit 57765efdfa7f562606fd8c0f3114b5c8f3f732a4
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Wed Oct 10 19:13:49 2018 +1100
+
+    troubleshooting associate_system_read()
+
+commit 98dd68c2f9b45a89be73d1336c1d65cd5fe62cef
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Wed Oct 10 19:10:15 2018 +1100
+
+    wip
+
+commit df949e4dd4aa9a75412c121f5b93affb7ce8133e
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Wed Oct 10 19:02:12 2018 +1100
+
+    complete comments
+
+commit 532693def22454e4ef57363e2b89efd9510e669d
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Wed Oct 10 18:39:15 2018 +1100
+
+    wip
+
+commit 9fad746a6a7e0b801430d90e9a63f2fe27deed4c
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Wed Oct 10 18:37:56 2018 +1100
+
+    add comments and [] to * filter
+
+commit 97f0bf897c13e3b5bc2f29c9a315c17b8a2ab114
+Author: Unknown <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:43:39 2018 +1100
+
+    add gitlog
+
+commit 25904b30b361d8661f2dc66513e41f3788caf605
+Author: rmit-s3530160-elliot-schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:43:01 2018 +1100
+
+    Update README.md
+
+commit 51a69975915729f9d1bcd54e9e4bcf9a74f97363
+Author: rmit-s3530160-elliot-schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:42:48 2018 +1100
+
+    Update README.md
+
+commit a8aca618325703d97bd11e04de2e4ee7807da012
+Author: rmit-s3530160-elliot-schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:42:30 2018 +1100
+
+    Update README.md
+
+commit 2b04ea160f0cd34a97ffd2338d7698607789e16b
+Author: rmit-s3530160-elliot-schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:38:23 2018 +1100
+
+    Update README.md
+
+commit 7aaec5c4dbfd5d23833c68a6b4c3eeeb2ccf273f
+Author: rmit-s3530160-elliot-schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:37:23 2018 +1100
+
+    Update README.md
+
+commit 90d31c9ab66e9556641e91961f827b3b727ddcf3
+Author: rmit-s3530160-elliot-schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:36:42 2018 +1100
+
+    Update README.md
+
+commit f3aee542a1c9ccc3df5e37446965b578c3c898f6
+Author: rmit-s3530160-elliot-schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:36:32 2018 +1100
+
+    Update README.md
+
+commit ba24b3c9dc5f594ed027815e6f78165db598c34b
+Author: rmit-s3530160-elliot-schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:34:48 2018 +1100
+
+    Update README.md
+
+commit 911415e35a41fb4b5bf37092c416d2a9f7db1cf2
+Author: rmit-s3530160-elliot-schot <s3530160@student.rmit.edu.au>
+Date:   Tue Oct 9 20:33:36 2018 +1100
+
+    Update README.md
+
 commit 3110f6c1ce9d46b80f06b29a4df0ed855ce54947
 Author: Unknown <s3530160@student.rmit.edu.au>
 Date:   Tue Oct 9 20:27:56 2018 +1100
