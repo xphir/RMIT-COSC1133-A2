@@ -83,11 +83,21 @@ main_read(){
     let limit=$INT_FOLDER_ARRAY_LENGTH+1
 
 	read -p "Please enter a number (1-$limit) for the led to configure or quit:" choice
-	case $choice in
-		[1-$INT_FOLDER_ARRAY_LENGTH]) manipulation_menu $choice;;
-		$limit) exit 0;;
-		*) echo -e "${RED}Error...${STD}" && sleep 2
-	esac
+
+    if [ $choice -ne 0 -o $choice -eq 0 2>/dev/null ]
+    then
+        if [ $choice -gt 0 ] && [ $choice -lt $limit ]
+        then
+            manipulation_menu $choice
+        elif [ $choice -eq $limit ]
+        then
+            exit 0
+        else
+            echo -e "${RED}Error not a valid option...${STD}" && sleep 2
+        fi
+    else
+        echo -e "${RED}Error input needs to be an integer...${STD}" && sleep 2
+    fi
 }
 
 #TODO SELECT FOLDERS ONLY
@@ -282,18 +292,26 @@ print_associate_system_array(){
 
 #This fucntion allows the user to pick the system event trigger
 associate_system_read(){
-	local choice
+    local choice
     local limit
     let limit=$INT_TRIGGER_ARRAY_LENGTH+1
-    echo "INT_TRIGGER_ARRAY_LENGTH: $INT_TRIGGER_ARRAY_LENGTH"
-    echo "limit: $limit"
-    #led_add_trigger $STRING_SELECTED_VALUE $choice
-	read -p "Please select an option (1-$limit):" choice
-    case $choice in
-		[1-$INT_TRIGGER_ARRAY_LENGTH]) echo "selected $choice";;
-		$limit) manipulation_menu $INT_SELECTED_FOLDER_ARRAY_NUM;;
-		*) echo -e "${RED}Error...${STD}" && sleep 2
-	esac
+   
+    read -p "Please select an option (1-$limit):" choice
+    #Check if input is an integer or not
+    if [ $choice -ne 0 -o $choice -eq 0 2>/dev/null ]
+    then
+        if [ $choice -gt 0 ] && [ $choice -lt $limit ]
+        then
+            led_add_trigger $STRING_SELECTED_VALUE $choice
+        elif [ $choice -eq $limit ]
+        then
+            manipulation_menu $INT_SELECTED_FOLDER_ARRAY_NUM
+        else
+            echo -e "${RED}Error not a valid option...${STD}" && sleep 2
+        fi
+    else
+        echo -e "${RED}Error input needs to be an integer...${STD}" && sleep 2
+    fi
 }
 
 # -----------------------------------
@@ -397,13 +415,23 @@ associate_process_print_array(){
 associate_process_search_select(){
     local -i array_size=${#ARRAY_PROCESS_GREP[@]}
     local -i monitor_choice=$1
-    local array_selection
-    read -p "Please enter a number (1-$array_size) for your choice:" array_selection
-    case $array_selection in
-        [0-$((array_size -1))]) associate_process_launcher $array_selection $monitor_choice;;
-        $array_size) manipulation_menu $INT_SELECTED_FOLDER_ARRAY_NUM;;
-        *) echo -e "${RED}Error...${STD}" && sleep 2
-    esac
+    local choice
+
+    read -p "Please enter a number (1-$array_size) for your choice:" choice
+    if [ $choice -ne 0 -o $choice -eq 0 2>/dev/null ]
+    then
+        if [ $choice -gt -1 ] && [ $choice -lt $array_size ]
+        then
+            associate_process_launcher $array_selection $monitor_choice
+        elif [ $choice -eq $array_size ]
+        then
+            manipulation_menu $INT_SELECTED_FOLDER_ARRAY_NUM
+        else
+            echo -e "${RED}Error not a valid option...${STD}" && sleep 2
+        fi
+    else
+        echo -e "${RED}Error input needs to be an integer...${STD}" && sleep 2
+    fi
 }
 
 #This function launches the performance monitor script
