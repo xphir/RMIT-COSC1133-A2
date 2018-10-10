@@ -287,10 +287,10 @@ associate_system_read(){
     let limit=$INT_TRIGGER_ARRAY_LENGTH+1
     echo "INT_TRIGGER_ARRAY_LENGTH: $INT_TRIGGER_ARRAY_LENGTH"
     echo "limit: $limit"
-
+    #led_add_trigger $STRING_SELECTED_VALUE $choice
 	read -p "Please select an option (1-$limit):" choice
     case $choice in
-		[1-$INT_TRIGGER_ARRAY_LENGTH]) led_add_trigger $STRING_SELECTED_VALUE $choice;;
+		[1-$INT_TRIGGER_ARRAY_LENGTH]) echo "selected $choice";;
 		$limit) manipulation_menu $INT_SELECTED_FOLDER_ARRAY_NUM;;
 		*) echo -e "${RED}Error...${STD}" && sleep 2
 	esac
