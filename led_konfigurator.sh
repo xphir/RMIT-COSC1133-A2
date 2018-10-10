@@ -235,11 +235,12 @@ print_associate_system_array(){
     do
         if [[ $trigger =~ $REGEX ]]; 
         then
-            print_value=($(echo $STRtriggerING | sed 's/.*\[\([^]]*\)\].*/\1*/g'))
+            print_value=($(echo $trigger | sed 's/.*\[\([^]]*\)\].*/\1*/g'))
             printf "%s) %s\n" "$count" "$print_value"           
         else
             printf "%s) %s\n" "$count" "$trigger"
         fi
+
         ((count++))
         ((screen_buffer++))
         if [ $screen_buffer -gt $screen_size ]
