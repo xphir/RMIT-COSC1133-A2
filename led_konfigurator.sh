@@ -100,10 +100,9 @@ main_read(){
     fi
 }
 
-#TODO SELECT FOLDERS ONLY
 #This fucntion gets the contents of the led folder and turns it into an array
 create_folder_array(){
-    for folder in $LEDS_FOLDER*
+    for folder in $LEDS_FOLDER*/
     do
         folder=${folder%*/}
         ARRAY_FOLDER_NAMES=(${ARRAY_FOLDER_NAMES[@]} "${folder##*/}")
